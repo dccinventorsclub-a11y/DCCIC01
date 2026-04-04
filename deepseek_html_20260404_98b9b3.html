@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DCC Inventors Club | Innovation Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .hero {
+            background: radial-gradient(ellipse at 20% 30%, #0b2b3b, #03161f);
+            border-radius: 2.5rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "⚡💡";
+            font-size: 9rem;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .club-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .title-section h1 {
+            font-size: 2rem;
+            letter-spacing: -0.3px;
+            font-weight: 700;
+        }
+        .title-section p {
+            opacity: 0.8;
+            margin-top: 0.4rem;
+            font-size: 0.95rem;
+        }
+        .stats {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 500;
+        }
+        .stats span {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* Cards */
+        .login-card, .admin-panel, .visitor-products, .checkout-section, .orders-panel {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1F3A4B, #0F2C3B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flex-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 180px;
+        }
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #2c3e44;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cfdfe8;
+            border-radius: 1.5rem;
+            font-size: 0.9rem;
+            background: #fefefe;
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #2c7a5e;
+            box-shadow: 0 0 0 3px rgba(44,122,94,0.1);
+        }
+        button {
+            background: #1f5e4b;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        button:hover {
+            background: #0e4234;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #1f5e4b;
+            color: #1f5e4b;
+        }
+        .btn-outline:hover {
+            background: #eef4f1;
+            transform: none;
+        }
+        .danger-btn {
+            background: #b23c1c;
+        }
+        .danger-btn:hover {
+            background: #8e2e12;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            border: 1px solid #e6edf2;
+        }
+        .product-img {
+            height: 200px;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #2b5e4a;
+        }
+        .product-info {
+            padding: 1rem 1.2rem 1.2rem;
+        }
+        .product-code {
+            font-size: 0.7rem;
+            background: #e9ecef;
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0 0.3rem;
+        }
+        .price {
+            font-weight: 800;
+            color: #1f5e4b;
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.7rem;
+        }
+        .cash-badge {
+            background: #fef3c7;
+            color: #b6560c;
+            border-radius: 50px;
+            padding: 0.2rem 0.8rem;
+            font-weight: 600;
+            font-size: 0.7rem;
+            display: inline-block;
+        }
+        hr {
+            margin: 1rem 0;
+            border-color: #e2edf2;
+        }
+        .order-summary {
+            background: #f9fafc;
+            padding: 1rem;
+            border-radius: 1.5rem;
+        }
+        .order-item {
+            background: #fafcfd;
+            margin-bottom: 1rem;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border-left: 4px solid #2c7a5e;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e2f3a;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            animation: fadeInUp 0.3s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .hidden {
+            display: none;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .login-card, .admin-panel, .visitor-products, .checkout-section { padding: 1rem; }
+        }
+        .product-select-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f2f5f9;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 1px solid transparent;
+        }
+        .product-select-item.selected {
+            background: #e1f5e8;
+            border-color: #1f5e4b;
+        }
+        .product-select-code {
+            font-family: monospace;
+            font-size: 0.7rem;
+            background: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        .img-preview {
+            margin-top: 0.5rem;
+            max-width: 100px;
+            max-height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #eef2f8;
+        }
+        .img-preview img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Hero section -->
+    <div class="hero">
+        <div class="club-badge">
+            <div class="title-section">
+                <h1>⚙️ DCC Inventors Club</h1>
+                <p>Deberawewa Madya Maha Vidyalaya — 200+ young inventors • 300+ innovations</p>
+            </div>
+            <div class="stats">
+                📦 <span id="totalProductsCount">0</span> Products &nbsp;|&nbsp; 🧪 300+ Creations
+            </div>
+        </div>
+        <div style="margin-top: 12px; font-size:0.8rem; opacity:0.7;">✨ Where creativity meets engineering | Cash on Delivery only</div>
+    </div>
+
+    <!-- Admin Login Section (no email shown on panel after login) -->
+    <div id="loginSection" class="login-card">
+        <div class="section-title">🔐 Admin Access</div>
+        <div class="flex-form">
+            <div class="input-group">
+                <label>Email / Gmail</label>
+                <input type="email" id="adminEmail" placeholder="Enter admin email">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" placeholder="Password">
+            </div>
+            <button id="loginBtn">🚀 Login to Dashboard</button>
+        </div>
+        <div style="margin-top: 0.8rem; font-size:0.7rem; color:#8ba0aa;">⚠️ Use credentials: dccinventorsclub@gmail.com / DCCMicro@admin123</div>
+    </div>
+
+    <!-- Admin Panel (hidden by default) -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <div class="flex-between">
+            <div class="section-title">🛠️ Admin Dashboard — Manage Products</div>
+            <button id="logoutBtn" class="btn-outline">🚪 Logout</button>
+        </div>
+        <!-- Add product form with image upload (local) -->
+        <div style="background: #f6f9fe; border-radius: 1.5rem; padding: 1.2rem; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1rem;">➕ Add New Invention / Product</h3>
+            <div class="flex-form" style="align-items: center;">
+                <div class="input-group"><label>Product Code *</label><input type="text" id="prodCode" placeholder="e.g., DCC-101"></div>
+                <div class="input-group"><label>Product Name *</label><input type="text" id="prodName" placeholder="Solar Rover"></div>
+                <div class="input-group"><label>Price (LKR) *</label><input type="number" id="prodPrice" placeholder="2450"></div>
+            </div>
+            <div class="flex-form" style="margin-top: 0.8rem;">
+                <div class="input-group"><label>Description</label><textarea id="prodDesc" rows="2" placeholder="Describe the innovation..."></textarea></div>
+                <div class="input-group"><label>Product Image (Upload from PC)</label>
+                    <input type="file" id="prodImageUpload" accept="image/*">
+                    <div id="imagePreview" class="img-preview hidden"></div>
+                </div>
+            </div>
+            <button id="addProductBtn" style="margin-top: 1rem;">✨ Add Product</button>
+        </div>
+
+        <!-- Existing products list -->
+        <div>
+            <h3>📋 Current Product Inventory</h3>
+            <div id="adminProductList" class="product-grid"></div>
+        </div>
+
+        <!-- Orders section for admin -->
+        <hr>
+        <div class="section-title">📦 Customer Orders (Cash on Delivery)</div>
+        <div id="ordersListAdmin" style="max-height: 450px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- Visitor Section -->
+    <div id="visitorSection" class="visitor-products">
+        <div class="section-title">🌟 Browse Club Innovations</div>
+        <div id="visitorProductGrid" class="product-grid"></div>
+
+        <!-- Order Section: customers select products by code visible -->
+        <div class="checkout-section" style="margin-top: 2rem;">
+            <div class="section-title">🛒 Place Your Order (Cash on Delivery Only)</div>
+            <div id="cartItemsList" class="order-summary">No products selected yet.</div>
+            <div id="checkoutForm" style="margin-top: 1.2rem;">
+                <div class="flex-form">
+                    <div class="input-group"><label>Full Name *</label><input type="text" id="custName" placeholder="E.g., Kaveesha Perera"></div>
+                    <div class="input-group"><label>Address *</label><input type="text" id="custAddress" placeholder="Delivery address"></div>
+                    <div class="input-group"><label>Phone Number *</label><input type="tel" id="custPhone" placeholder="07X XXX XXXX"></div>
+                </div>
+                <div style="margin: 1rem 0;">
+                    <label style="font-weight: 600;">📌 Select Products (click on any to choose multiple) — <span style="font-size:0.75rem;">Product Code shown for easy identification</span></label>
+                    <div id="multiSelectProducts" style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.6rem;"></div>
+                </div>
+                <button id="placeOrderBtn">✅ Place Order (Cash on Delivery)</button>
+                <div style="margin-top: 12px; font-size:0.75rem; background:#fef1e0; padding: 0.4rem 0.8rem; border-radius: 20px; display: inline-block;">💵 Payment Method: <strong>Cash on Delivery only</strong> — No online payments</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- DATA ----------
+    let products = []; // each product: { code, name, description, price, pictureData (base64 or emoji fallback), pictureType }
+    let orders = [];
+    let isAdminLoggedIn = false;
+
+    // Helper: save to localStorage (images stored as base64)
+    function saveData() {
+        localStorage.setItem('dcc_products', JSON.stringify(products));
+        localStorage.setItem('dcc_orders', JSON.stringify(orders));
+    }
+
+    function loadData() {
+        const storedProducts = localStorage.getItem('dcc_products');
+        if(storedProducts) {
+            products = JSON.parse(storedProducts);
+        } else {
+            // Seed demo products with image placeholder as text emoji (but image upload ready)
+            products = [
+                { code: "INV-101", name: "Eco Smart Bin", description: "Automated waste segregator with sensor", price: 3450, pictureData: "🗑️♻️", pictureType: "emoji" },
+                { code: "INV-202", name: "Solar Grass Cutter", description: "Remote controlled eco-friendly cutter", price: 5200, pictureData: "☀️🌿", pictureType: "emoji" },
+                { code: "INV-305", name: "Hydro Generator Kit", description: "Mini hydroelectric demonstration", price: 4750, pictureData: "💧⚡", pictureType: "emoji" },
+                { code: "INV-408", name: "Smart Irrigation", description: "Soil moisture based automation", price: 3890, pictureData: "🌱💧", pictureType: "emoji" }
+            ];
+            saveData();
+        }
+        const storedOrders = localStorage.getItem('dcc_orders');
+        if(storedOrders) {
+            orders = JSON.parse(storedOrders);
+        } else {
+            orders = [];
+            saveData();
+        }
+        updateTotalCount();
+    }
+
+    function updateTotalCount() {
+        const span = document.getElementById('totalProductsCount');
+        if(span) span.innerText = products.length;
+    }
+
+    // Helper: render product image
+    function getProductImageHtml(prod) {
+        if(prod.pictureType === "base64" && prod.pictureData) {
+            return `<div class="product-img" style="background-size: cover; background-image: url('${prod.pictureData}');"></div>`;
+        } else {
+            return `<div class="product-img" style="font-size:3rem; display:flex; align-items:center; justify-content:center;">${prod.pictureData || '🔬'}</div>`;
+        }
+    }
+
+    // Admin: render product list with delete
+    function renderAdminProducts() {
+        const container = document.getElementById('adminProductList');
+        if(!container) return;
+        if(products.length === 0) {
+            container.innerHTML = '<div style="padding:2rem; text-align:center;">No products yet. Add using form above.</div>';
+            return;
+        }
+        container.innerHTML = '';
+        products.forEach((prod, idx) => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            let imageHtml = '';
+            if(prod.pictureType === "base64" && prod.pictureData) {
+                imageHtml = `<div class="product-img" style="background-size: cover; background-image: url('${prod.pictureData}');"></div>`;
+            } else {
+                imageHtml = `<div class="product-img" style="font-size:3rem; display:flex; align-items:center; justify-content:center;">${prod.pictureData || '🔧'}</div>`;
+            }
+            card.innerHTML = `
+                ${imageHtml}
+                <div class="product-info">
+                    <div class="product-code">${escapeHtml(prod.code)}</div>
+                    <div class="product-name">${escapeHtml(prod.name)}</div>
+                    <div class="price">LKR ${Number(prod.price).toLocaleString()}</div>
+                    <div class="cash-badge">💰 Cash on delivery only</div>
+                    <p style="font-size:0.8rem; margin:0.5rem 0;">${escapeHtml(prod.description)}</p>
+                    <div class="admin-actions"><button class="delete-product-btn danger-btn" data-index="${idx}">🗑️ Delete</button></div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        document.querySelectorAll('.delete-product-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-index'));
+                if(confirm('Delete product permanently?')) {
+                    products.splice(idx, 1);
+                    saveData();
+                    renderAdminProducts();
+                    renderVisitorProducts();
+                    renderProductSelectors();
+                    updateTotalCount();
+                    showToast("Product removed.");
+                }
+            });
+        });
+    }
+
+    // Visitor product display (with product code)
+    function renderVisitorProducts() {
+        const container = document.getElementById('visitorProductGrid');
+        if(!container) return;
+        if(products.length === 0) {
+            container.innerHTML = '<div style="padding:2rem; text-align:center;">No products available currently. Check back later!</div>';
+            return;
+        }
+        container.innerHTML = '';
+        products.forEach(prod => {
+            let imageHtml = '';
+            if(prod.pictureType === "base64" && prod.pictureData) {
+                imageHtml = `<div class="product-img" style="background-size: cover; background-image: url('${prod.pictureData}');"></div>`;
+            } else {
+                imageHtml = `<div class="product-img" style="font-size:3rem; display:flex; align-items:center; justify-content:center;">${prod.pictureData || '💡'}</div>`;
+            }
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                ${imageHtml}
+                <div class="product-info">
+                    <div class="product-code">📇 ${escapeHtml(prod.code)}</div>
+                    <div class="product-name">${escapeHtml(prod.name)}</div>
+                    <div class="price">LKR ${Number(prod.price).toLocaleString()}</div>
+                    <div class="cash-badge">✅ Cash on Delivery</div>
+                    <p style="font-size:0.8rem;">${escapeHtml(prod.description)}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Render product selectors for customers (with product code clearly visible)
+    function renderProductSelectors() {
+        const container = document.getElementById('multiSelectProducts');
+        if(!container) return;
+        if(products.length === 0) {
+            container.innerHTML = '<span style="color:gray;">No products available to order yet.</span>';
+            return;
+        }
+        container.innerHTML = '';
+        products.forEach((prod, idx) => {
+            const div = document.createElement('div');
+            div.className = 'product-select-item';
+            div.setAttribute('data-prod-idx', idx);
+            div.innerHTML = `
+                <input type="checkbox" class="product-checkbox-select" data-idx="${idx}" id="chk_${idx}" style="width: 20px; height: 20px; cursor: pointer;">
+                <label for="chk_${idx}" style="cursor: pointer; flex:1; display: flex; justify-content: space-between; align-items: center;">
+                    <span><strong>${escapeHtml(prod.name)}</strong> <span class="product-select-code">${escapeHtml(prod.code)}</span></span>
+                    <span style="font-weight:700;">LKR ${Number(prod.price).toLocaleString()}</span>
+                </label>
+            `;
+            container.appendChild(div);
+        });
+        // attach change event to update cart preview
+        document.querySelectorAll('.product-checkbox-select').forEach(cb => {
+            cb.addEventListener('change', () => updateCartPreview());
+        });
+        updateCartPreview();
+    }
+
+    function getSelectedProductsFromUI() {
+        const selected = [];
+        const checkboxes = document.querySelectorAll('.product-checkbox-select:checked');
+        checkboxes.forEach(cb => {
+            const idx = parseInt(cb.getAttribute('data-idx'));
+            if(!isNaN(idx) && products[idx]) {
+                selected.push(products[idx]);
+            }
+        });
+        return selected;
+    }
+
+    function updateCartPreview() {
+        const selected = getSelectedProductsFromUI();
+        const cartContainer = document.getElementById('cartItemsList');
+        if(selected.length === 0) {
+            cartContainer.innerHTML = '<div class="order-summary">✨ No products selected. Please choose at least one invention (by product code).</div>';
+            return;
+        }
+        let total = selected.reduce((sum, p) => sum + Number(p.price), 0);
+        let itemsHtml = `<div class="order-summary"><strong>🛍️ Selected items (${selected.length}):</strong><ul style="margin: 0.7rem 0 0 1rem;">`;
+        selected.forEach(p => {
+            itemsHtml += `<li><strong>${escapeHtml(p.name)}</strong> [Code: ${escapeHtml(p.code)}] — LKR ${Number(p.price).toLocaleString()}</li>`;
+        });
+        itemsHtml += `</ul><strong>Total: LKR ${total.toLocaleString()}</strong><br><span class="cash-badge">🚚 Payment: Cash on delivery only (no online payment)</span></div>`;
+        cartContainer.innerHTML = itemsHtml;
+    }
+
+    function placeOrder() {
+        const name = document.getElementById('custName')?.value.trim();
+        const address = document.getElementById('custAddress')?.value.trim();
+        const phone = document.getElementById('custPhone')?.value.trim();
+        const selectedProducts = getSelectedProductsFromUI();
+        if(!name || !address || !phone) {
+            showToast("❌ Please fill in name, address and phone number");
+            return;
+        }
+        if(selectedProducts.length === 0) {
+            showToast("❌ Please select at least one product to order.");
+            return;
+        }
+        const totalAmount = selectedProducts.reduce((sum, p) => sum + Number(p.price), 0);
+        const newOrder = {
+            id: Date.now(),
+            customerName: name,
+            address: address,
+            phone: phone,
+            items: selectedProducts.map(p => ({ code: p.code, name: p.name, price: p.price, description: p.description })),
+            total: totalAmount,
+            date: new Date().toLocaleString(),
+            status: "Pending (Cash on Delivery)"
+        };
+        orders.push(newOrder);
+        saveData();
+        // clear checkboxes and inputs
+        document.querySelectorAll('.product-checkbox-select').forEach(cb => cb.checked = false);
+        document.getElementById('custName').value = '';
+        document.getElementById('custAddress').value = '';
+        document.getElementById('custPhone').value = '';
+        updateCartPreview();
+        renderAdminOrders(); // if admin logged refresh orders
+        showToast(`✅ Order placed! Total LKR ${totalAmount}. We'll contact you for delivery.`);
+    }
+
+    function renderAdminOrders() {
+        const ordersContainer = document.getElementById('ordersListAdmin');
+        if(!ordersContainer) return;
+        if(orders.length === 0) {
+            ordersContainer.innerHTML = '<div style="padding:1rem; text-align:center;">No customer orders yet.</div>';
+            return;
+        }
+        let html = `<div>`;
+        [...orders].reverse().forEach(order => {
+            html += `<div class="order-item">
+                        <div><strong>🧑‍💼 ${escapeHtml(order.customerName)}</strong> | 📞 ${escapeHtml(order.phone)}</div>
+                        <div>📍 ${escapeHtml(order.address)}</div>
+                        <div>📅 ${order.date}</div>
+                        <div><strong>Items:</strong><ul>`;
+            order.items.forEach(item => {
+                html += `<li>${escapeHtml(item.name)} (${escapeHtml(item.code)}) - LKR ${Number(item.price).toLocaleString()}</li>`;
+            });
+            html += `</ul></div><div><strong>Total: LKR ${Number(order.total).toLocaleString()}</strong> | 💵 ${order.status}</div>
+                    </div><hr style="margin:0.5rem 0;">`;
+        });
+        html += `</div>`;
+        ordersContainer.innerHTML = html;
+    }
+
+    // Image upload handling (local PC, base64)
+    let pendingImageBase64 = null;
+    function setupImageUpload() {
+        const fileInput = document.getElementById('prodImageUpload');
+        const previewDiv = document.getElementById('imagePreview');
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    pendingImageBase64 = ev.target.result;
+                    previewDiv.innerHTML = `<img src="${pendingImageBase64}" style="max-width:100px; max-height:80px; border-radius:12px;">`;
+                    previewDiv.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                pendingImageBase64 = null;
+                previewDiv.classList.add('hidden');
+                previewDiv.innerHTML = '';
+            }
+        });
+    }
+
+    function addProduct() {
+        const code = document.getElementById('prodCode').value.trim();
+        const name = document.getElementById('prodName').value.trim();
+        const price = parseFloat(document.getElementById('prodPrice').value);
+        const desc = document.getElementById('prodDesc').value.trim();
+        if(!code || !name || isNaN(price) || price <= 0) {
+            showToast("Please fill product code, name and valid price.");
+            return;
+        }
+        let pictureData = pendingImageBase64;
+        let pictureType = pictureData ? "base64" : "emoji";
+        if(!pictureData) pictureData = "🔧🧪"; // fallback emoji
+        const newProduct = {
+            code, name, description: desc || "Innovation by DCC Club", price,
+            pictureData: pictureData,
+            pictureType: pictureType
+        };
+        products.push(newProduct);
+        saveData();
+        // reset form
+        document.getElementById('prodCode').value = '';
+        document.getElementById('prodName').value = '';
+        document.getElementById('prodPrice').value = '';
+        document.getElementById('prodDesc').value = '';
+        document.getElementById('prodImageUpload').value = '';
+        document.getElementById('imagePreview').classList.add('hidden');
+        document.getElementById('imagePreview').innerHTML = '';
+        pendingImageBase64 = null;
+        renderAdminProducts();
+        renderVisitorProducts();
+        renderProductSelectors();
+        updateTotalCount();
+        showToast(`✅ "${name}" added successfully!`);
+    }
+
+    function attemptLogin() {
+        const email = document.getElementById('adminEmail').value.trim();
+        const pwd = document.getElementById('adminPassword').value.trim();
+        if(email === 'dccinventorsclub@gmail.com' && pwd === 'DCCMicro@admin123') {
+            isAdminLoggedIn = true;
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            renderAdminProducts();
+            renderAdminOrders();
+            showToast("Welcome Admin!");
+        } else {
+            showToast("Invalid credentials!");
+        }
+    }
+
+    function logoutAdmin() {
+        isAdminLoggedIn = false;
+        document.getElementById('loginSection').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+        showToast("Logged out.");
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function showToast(msg) { let t = document.createElement('div'); t.className='toast-msg'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        setupImageUpload();
+        renderVisitorProducts();
+        renderProductSelectors();
+        renderAdminOrders();
+        document.getElementById('loginBtn')?.addEventListener('click', attemptLogin);
+        document.getElementById('logoutBtn')?.addEventListener('click', logoutAdmin);
+        document.getElementById('addProductBtn')?.addEventListener('click', addProduct);
+        document.getElementById('placeOrderBtn')?.addEventListener('click', placeOrder);
+        if(isAdminLoggedIn === false) {
+            document.getElementById('adminPanel')?.classList.add('hidden');
+            document.getElementById('loginSection')?.classList.remove('hidden');
+        } else {
+            document.getElementById('loginSection')?.classList.add('hidden');
+            document.getElementById('adminPanel')?.classList.remove('hidden');
+            renderAdminProducts();
+            renderAdminOrders();
+        }
+        updateTotalCount();
+    });
+</script>
+</body>
+</html>
